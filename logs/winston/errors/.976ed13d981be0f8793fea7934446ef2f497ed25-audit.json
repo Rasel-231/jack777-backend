@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "F:\\Programing Practice\\Jack777\\jack-backend\\logs\\winston\\errors\\.976ed13d981be0f8793fea7934446ef2f497ed25-audit.json",
+    "files": [
+        {
+            "date": 1757678491233,
+            "name": "F:\\Programing Practice\\Jack777\\jack-backend\\logs\\winston\\errors\\Jack-2025-09-12-18-error.logs",
+            "hash": "06dfd937eded3906d50acaba91f354a5bcbb6b6d9dc8aa9478db85a405954f5e"
+        }
+    ],
+    "hashType": "sha256"
+}

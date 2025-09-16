@@ -1,0 +1,55 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "F:\\Programing Practice\\Jack777\\jack-backend\\logs\\winston\\errors\\.b58a6a415acb686449fc4174c6c8e2e7f1f26e5f-audit.json",
+    "files": [
+        {
+            "date": 1757678640003,
+            "name": "F:\\Programing Practice\\Jack777\\jack-backend\\logs\\winston\\errors\\Jack-12-09-2025-18-error.logs",
+            "hash": "88984aaf5acada88dc422e22c3cec535074c8983e733ecf1f7a4042476a7b5a2"
+        },
+        {
+            "date": 1757685020429,
+            "name": "F:\\Programing Practice\\Jack777\\jack-backend\\logs\\winston\\errors\\Jack-12-09-2025-19-error.logs",
+            "hash": "21756169fef1bc196f089adee3e34dac90aa38f6aad1d0ad071683ca865e1e21"
+        },
+        {
+            "date": 1757968554799,
+            "name": "F:\\Programing Practice\\Jack777\\jack-backend\\logs\\winston\\errors\\Jack-16-09-2025-02-error.logs",
+            "hash": "3a83df155b1439f7f935481bad791c371cd79f2bd71c438b79935556d3ea476e"
+        },
+        {
+            "date": 1757973408442,
+            "name": "F:\\Programing Practice\\Jack777\\jack-backend\\logs\\winston\\errors\\Jack-16-09-2025-03-error.logs",
+            "hash": "46b7aefeef3ed05623349f5f1e07310e88441e72ebb5434d0ce44687dae53e12"
+        },
+        {
+            "date": 1757973857147,
+            "name": "F:\\Programing Practice\\Jack777\\jack-backend\\logs\\winston\\errors\\Jack-16-09-2025-04-error.logs",
+            "hash": "2f3f74df40e12d7127cfe78776b13e438ba11348d2f005a56c48a9bbbc506186"
+        },
+        {
+            "date": 1757977201047,
+            "name": "F:\\Programing Practice\\Jack777\\jack-backend\\logs\\winston\\errors\\Jack-16-09-2025-05-error.logs",
+            "hash": "876949264f8cbe0e20c01ef9e746645828312fce9aa4576d89e238a0c4385942"
+        },
+        {
+            "date": 1758016532172,
+            "name": "F:\\Programing Practice\\Jack777\\jack-backend\\logs\\winston\\errors\\Jack-16-09-2025-15-error.logs",
+            "hash": "0b85ad3cad2b9aa67d2229829f364dc4314df10a6ee2895241f24684f180852c"
+        },
+        {
+            "date": 1758017062102,
+            "name": "F:\\Programing Practice\\Jack777\\jack-backend\\logs\\winston\\errors\\Jack-16-09-2025-16-error.logs",
+            "hash": "5907e3c353f029bd698a8e4ced1e66d5839f095ac88b7dad8ee4243b60730a85"
+        },
+        {
+            "date": 1758020514346,
+            "name": "F:\\Programing Practice\\Jack777\\jack-backend\\logs\\winston\\errors\\Jack-16-09-2025-17-error.logs",
+            "hash": "811a21e61839e778e08b3b5837a20015a6189c0b2233adc059d80334fcb3254a"
+        }
+    ],
+    "hashType": "sha256"
+}
