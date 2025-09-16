@@ -1,0 +1,12 @@
+{
+  message: 'Database connected is successfull',
+  level: 'info',
+  label: 'Jack',
+  timestamp: '2025-09-16T14:29:16.072Z'
+}
+{
+  message: 'Example app listening on port 5001',
+  level: 'info',
+  label: 'Jack',
+  timestamp: '2025-09-16T14:29:16.078Z'
+}

@@ -1,5 +1,6 @@
 import express from 'express'
 import { RegisterRoutes } from '../module/authentication/Register/register.route'
+import { AuthRoutes } from '../module/authentication/auth/auth.routes'
 
 const router = express.Router()
 
@@ -7,6 +8,10 @@ const moduleRoutes = [
     {
         path: "/register",
         router: RegisterRoutes,
+    },
+    {
+        path: "/auth",
+        router: AuthRoutes,
     },
 
 ]
