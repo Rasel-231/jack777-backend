@@ -20,12 +20,13 @@ const AuthSchema = new Schema<IAuth>({
 // }
 
 //option-2
-AuthSchema.statics.isUserExist = async function (id: string): Promise<IAuth | null> {
-    return await this.findOne({ id });
+AuthSchema.statics.isUserExist = async function (username: string): Promise<IAuth | null> {
+    return await this.findOne({ username });
 }
 
 AuthSchema.statics.isPasswordMatched = async function (givenPassword: string, savePassword: string): Promise<boolean> {
     return await bcrypt.compare(givenPassword, savePassword)
+
 }
 
 

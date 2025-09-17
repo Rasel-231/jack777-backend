@@ -3,15 +3,39 @@ import { CustomAsyncFn } from "../../../common/CustomAsyncFn/CustomAsyncFn"
 import { sendResponse } from "../../../common/CustomResponse/sendResponse";
 import { StatusCodes } from "http-status-codes";
 import { AuthService } from "./auth.service";
-import { IAuth } from "./auth.interface";
+import { IAuth, ILoginUserResponse } from "./auth.interface";
+import config from "../../../config";
+
 
 const login = CustomAsyncFn(async (req: Request, res: Response) => {
-    const { username } = req.body;
-    console.log("Login attempt for username:", username);
+    const { username, password, role } = req.body;
+    const result = await AuthService.login(username, password, role)
+    const { refreshToken } = result;
+    const cookieOptions = {
+        secure: config.node_env === 'production',
+        httpOnly: true,
+    }
 
-    const result = await AuthService.login(username)
-    console.log("Mongo returned user:", result);
-    sendResponse(res, {
+    res.cookie('refreshToken', refreshToken, cookieOptions)
+    sendResponse<ILoginUserResponse>(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: "User logged in successfully !",
+        data: result
+    })
+})
+const refreshToken = CustomAsyncFn(async (req: Request, res: Response) => {
+    const { refreshToken } = req.cookies;
+    const result = await AuthService.refreshToken(refreshToken)
+
+    //set Refersh-token
+    const cookieOptions = {
+        secure: config.node_env === 'production',
+        httpOnly: true,
+    }
+
+    res.cookie('refreshToken', refreshToken, cookieOptions)
+    sendResponse<ILoginUserResponse>(res, {
         success: true,
         statusCode: StatusCodes.OK,
         message: "'User logged in successfully !",
@@ -34,6 +58,7 @@ const register = CustomAsyncFn(async (req: Request, res: Response) => {
 export const AuthController = {
     login,
     register,
+    refreshToken,
     // changePassword,
     // forgetPassword,
     // resetPassword,
