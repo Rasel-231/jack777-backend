@@ -22,3 +22,15 @@
   label: 'Jack',
   timestamp: '2025-09-17T17:26:57.493Z'
 }
+{
+  message: 'Database connected is successfull',
+  level: 'info',
+  label: 'Jack',
+  timestamp: '2025-09-17T17:31:17.554Z'
+}
+{
+  message: 'Example app listening on port 5001',
+  level: 'info',
+  label: 'Jack',
+  timestamp: '2025-09-17T17:31:17.559Z'
+}
