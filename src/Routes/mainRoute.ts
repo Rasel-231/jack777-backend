@@ -1,12 +1,12 @@
 import express from 'express'
-import { RegisterRoutes } from '../module/authentication/Register/register.route'
+import { RegisterRoutes } from '../module/authentication/reuseable/route'
 import { AuthRoutes } from '../module/authentication/auth/auth.routes'
 
 const router = express.Router()
 
 const moduleRoutes = [
     {
-        path: "/register",
+        path: "/sdfsdfsada",
         router: RegisterRoutes,
     },
     {

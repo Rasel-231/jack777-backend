@@ -1,82 +1,15 @@
 import { StatusCodes } from "http-status-codes";
 import ApiError from "../../../common/CustomError/CustomApiError/ApiError";
 import config from "../../../config";
-import { IAuth, IRefreshTokenResponse } from "./auth.interface";
+import { IAuth, IChangePassword, IRefreshTokenResponse } from "./auth.interface";
 import { Auth } from "./auth.model";
 import { jwtToken } from "../jsonwebtoken/CustomJwt";
 import { JwtPayload, Secret } from "jsonwebtoken";
+import bcrypt from 'bcrypt'
+import { sendEmail } from "./sendResetEmail";
 
-// LOGIN FUNCTION
-const login = async (username: string, password: string) => {
-    // চেক করা হচ্ছে ইউজার আছে কিনা
-    const isUserExist = await Auth.isUserExist(username);
-    if (!isUserExist) {
-        throw new ApiError(StatusCodes.NOT_FOUND, "User does not exist");
-    }
-
-    // যদি ইউজার থাকে, তবে পাসওয়ার্ড মিলছে কিনা চেক করা
-    if (
-        isUserExist?.password &&
-        !(await Auth.isPasswordMatched(password, isUserExist?.password))
-    ) {
-        throw new ApiError(StatusCodes.UNAUTHORIZED, "Password is incorrect");
-    }
-
-    // ✅ লগিন হলে অ্যাকসেস টোকেন এবং রিফ্রেশ টোকেন তৈরি করা
-    const accessToken = jwtToken.createToken(
-        { username: isUserExist.username, role: isUserExist.role },
-        config.jwt_access_Token as Secret,
-        Number(config.jwt_access_token_duration)
-    );
-
-    const refreshToken = jwtToken.createToken(
-        { username: isUserExist.username, role: isUserExist.role },
-        config.jwt_refresh_Token as Secret,
-        Number(config.jwt_refresh_token_duration)
-    );
-
-    // টোকেন রিটার্ন করা
-    return { accessToken, refreshToken };
-};
-
-
-// REFRESH TOKEN FUNCTION
-
-const refreshToken = async (refreshtoken: string): Promise<IRefreshTokenResponse> => {
-    let verifiedToken: JwtPayload | null = null;
-
-    try {
-        // রিফ্রেশ টোকেন ভেরিফাই করা
-        verifiedToken = jwtToken.verifyToken(
-            refreshtoken,
-            config.jwt_refresh_Token as Secret
-        ) as JwtPayload;
-    } catch (err) {
-        throw new ApiError(StatusCodes.FORBIDDEN, "Invalid Refresh Token");
-    }
-
-    // রিফ্রেশ টোকেন থেকে ইউজারনেম বের করা
-    const { username } = verifiedToken;
-
-    // ইউজার আছে কিনা চেক করা
-    const isUserExist = await Auth.isUserExist(username);
-    if (!isUserExist) {
-        throw new ApiError(StatusCodes.NOT_FOUND, "User does not exist");
-    }
-
-    // ✅ ইউজার থাকলে নতুন অ্যাকসেস টোকেন তৈরি করা
-    const newAccessToken = jwtToken.createToken(
-        { username },
-        config.jwt_access_Token as Secret,
-        Number(config.jwt_access_token_duration)
-    );
-
-    return { accessToken: newAccessToken };
-};
-
-// REGISTER FUNCTION
+// 1️⃣ Register
 const register = async (data: IAuth): Promise<IAuth | null> => {
-    // চেক করা হচ্ছে ইউজার, ইমেইল বা ফোন নং আগে থেকেই আছে কিনা
     const existingUser = await Auth.findOne({
         $or: [
             { username: data.username },
@@ -85,27 +18,131 @@ const register = async (data: IAuth): Promise<IAuth | null> => {
         ],
     });
 
-    // যদি আগে থেকে থাকে, তাতে কনফ্লিক্ট হ্যান্ডেল করা
     if (existingUser) {
-        if (existingUser.username === data.username) {
-            throw new ApiError(StatusCodes.CONFLICT, "Username already exists");
-        }
-        if (existingUser.email === data.email) {
-            throw new ApiError(StatusCodes.CONFLICT, "Email already exists");
-        }
-        if (existingUser.phone === data.phone) {
-            throw new ApiError(StatusCodes.CONFLICT, "Phone Number already exists");
-        }
+        if (existingUser.username === data.username) throw new ApiError(StatusCodes.CONFLICT, "Username already exists");
+        if (existingUser.email === data.email) throw new ApiError(StatusCodes.CONFLICT, "Email already exists");
+        if (existingUser.phone === data.phone) throw new ApiError(StatusCodes.CONFLICT, "Phone Number already exists");
     }
 
-    // ✅ নতুন ইউজার তৈরি করা
     const result = await Auth.create(data);
     return result;
 };
 
-// EXPORTING AUTH SERVICE
+// 2️⃣ Login
+const login = async (username: string, password: string) => {
+    const isUserExist = await Auth.isUserExist(username);
+    if (!isUserExist) throw new ApiError(StatusCodes.NOT_FOUND, "User does not exist");
+
+    if (isUserExist.password && !(await Auth.isPasswordMatched(password, isUserExist?.password))) {
+        throw new ApiError(StatusCodes.UNAUTHORIZED, "Password is incorrect");
+    }
+
+    const accessToken = jwtToken.createToken(
+        { _id: isUserExist._id, username: isUserExist.username, role: isUserExist.role },
+        config.jwt_access_Token as Secret,
+        Number(config.jwt_access_token_duration)
+    );
+
+    const refreshToken = jwtToken.createToken(
+        { _id: isUserExist._id, username: isUserExist.username, role: isUserExist.role },
+        config.jwt_refresh_Token as Secret,
+        Number(config.jwt_refresh_token_duration)
+    );
+
+    return { accessToken, refreshToken };
+};
+
+// 3️⃣ Refresh Token
+const refreshToken = async (refreshtoken: string): Promise<IRefreshTokenResponse> => {
+    let verifiedToken: JwtPayload | null = null;
+
+    try {
+        verifiedToken = jwtToken.verifyToken(refreshtoken, config.jwt_refresh_Token as Secret) as JwtPayload;
+    } catch (err) {
+        throw new ApiError(StatusCodes.FORBIDDEN, "Invalid Refresh Token");
+    }
+
+    const { username } = verifiedToken;
+    const isUserExist = await Auth.isUserExist(username);
+    if (!isUserExist) throw new ApiError(StatusCodes.NOT_FOUND, "User does not exist");
+
+    const newAccessToken = jwtToken.createToken(
+        { _id: isUserExist._id, username: isUserExist.username, role: isUserExist.role },
+        config.jwt_access_Token as Secret,
+        Number(config.jwt_access_token_duration)
+    );
+    const newRefreshToken = jwtToken.createToken(
+        { _id: isUserExist._id, username: isUserExist.username, role: isUserExist.role },
+        config.jwt_refresh_Token as Secret,
+        Number(config.jwt_refresh_token_duration)
+    );
+
+    return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+};
+
+// 4️⃣ Change Password
+const passwordChanged = async (user: any, payload: IChangePassword) => {
+    const { oldPassword, newPassword } = payload;
+
+    const isExist = await Auth.findOne({ username: user?.username }).select('+password');
+    if (!isExist) throw new ApiError(StatusCodes.NOT_FOUND, "User does not exist");
+
+    if (isExist.password && !(await Auth.isPasswordMatched(oldPassword, isExist.password))) {
+        throw new ApiError(StatusCodes.UNAUTHORIZED, 'Old Password is incorrect');
+    }
+
+    isExist.password = newPassword;
+    isExist.passwordChangedAt = new Date();
+    await isExist.save()
+};
+
+// 5️⃣ Forget Password
+const forgetPassword = async (payload: { _id: string }) => {
+    const user = await Auth.findById(payload._id, { _id: 1, role: 1, email: 1, username: 1, fullname: 1 })
+    if (!user) throw new ApiError(StatusCodes.NOT_FOUND, "User does not exist");
+
+    const resetToken = jwtToken.createResetToken({ _id: user._id }, config.jwt_access_Token as Secret, Number(config.jwt_access_token_duration))
+    const resetLink: string = config.resetlink + `token=${resetToken}`
+
+    try {
+        const result = await sendEmail(user?.email,
+            `<div>
+                <p>Hi,${user?.fullname}</p>
+                <p>Your Password Link: <a href = ${resetLink}>Reset Password</a></p>
+                <p>Thank You</p>
+            </div>`
+        )
+        return result
+    } catch (err) {
+        throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Failed to send reset email");
+    }
+};
+
+// 6️⃣ Reset Password
+const resetPassword = async (payload: { id: string, newPassword: string }, token: string) => {
+    console.log("resset Token:", token);
+    const { id, newPassword } = payload;
+    console.log("Reset Payload:", payload);
+
+    const isExistingUser = await Auth.findById(id);
+    console.log("isExistingUser", id);
+    if (!isExistingUser) throw new ApiError(StatusCodes.NOT_FOUND, 'User does not exist');
+
+    const isVerified = jwtToken.verifyToken(token, config.jwt_access_Token as Secret) as JwtPayload;
+    if (isVerified._id !== id) throw new ApiError(StatusCodes.FORBIDDEN, 'Time expired or invalid');
+
+    const password = await bcrypt.hash(newPassword, Number(config.bcrypt_salt_rounds));
+    await Auth.updateOne({ _id: id }, { password, passwordChangedAt: new Date() });
+
+    return { message: "Password reset successful" };
+};
+
+// ---------- Export ----------
 export const AuthService = {
-    login,
     register,
+    login,
     refreshToken,
+    passwordChanged,
+    forgetPassword,
+    resetPassword,
 };

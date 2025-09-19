@@ -4,24 +4,21 @@ import config from "../../../config";
 import { IAuth, IStaticsModel } from "./auth.interface";
 
 const AuthSchema = new Schema<IAuth>({
+
     username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select: false },
     email: { type: String, required: true, unique: true },
     fullname: { type: String, required: true },
     phone: { type: String, required: true, unique: true },
     dob: { type: String, required: true },
+    passwordChangedAt: { type: Date },
 }, {
     timestamps: true
 });
 
-//option-1
-// AuthSchema.statics.isUserExist = async function (username: string): Promise<IAuth | null> {
-//     return await this.findOne({ username });
-// }
 
-//option-2
 AuthSchema.statics.isUserExist = async function (username: string): Promise<IAuth | null> {
-    return await this.findOne({ username });
+    return this.findOne({ username }).select('+password');
 }
 
 AuthSchema.statics.isPasswordMatched = async function (givenPassword: string, savePassword: string): Promise<boolean> {
