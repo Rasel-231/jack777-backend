@@ -1,0 +1,34 @@
+{
+  level: 'error',
+  message: 'Failed to caonnected Database The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.',
+  stack: 'MongooseError: The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.\n' +
+    '    at NativeConnection.createClient (F:\\Programing Practice\\Jack777\\jack-backend\\node_modules\\mongoose\\lib\\drivers\\node-mongodb-native\\connection.js:206:11)\n' +
+    '    at NativeConnection.openUri (F:\\Programing Practice\\Jack777\\jack-backend\\node_modules\\mongoose\\lib\\connection.js:766:34)\n' +
+    '    at Mongoose.connect (F:\\Programing Practice\\Jack777\\jack-backend\\node_modules\\mongoose\\lib\\index.js:416:15)\n' +
+    '    at F:\\Programing Practice\\Jack777\\jack-backend\\src\\index.ts:19:20\n' +
+    '    at Generator.next (<anonymous>)\n' +
+    '    at F:\\Programing Practice\\Jack777\\jack-backend\\src\\index.ts:8:71\n' +
+    '    at new Promise (<anonymous>)\n' +
+    '    at __awaiter (F:\\Programing Practice\\Jack777\\jack-backend\\src\\index.ts:4:12)\n' +
+    '    at Database (F:\\Programing Practice\\Jack777\\jack-backend\\src\\index.ts:21:12)\n' +
+    '    at Object.<anonymous> (F:\\Programing Practice\\Jack777\\jack-backend\\src\\index.ts:40:1)',
+  label: 'Jack',
+  timestamp: '2025-09-19T20:36:52.867Z'
+}
+{
+  level: 'error',
+  message: 'Failed to caonnected Database The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.',
+  stack: 'MongooseError: The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.\n' +
+    '    at NativeConnection.createClient (F:\\Programing Practice\\Jack777\\jack-backend\\node_modules\\mongoose\\lib\\drivers\\node-mongodb-native\\connection.js:206:11)\n' +
+    '    at NativeConnection.openUri (F:\\Programing Practice\\Jack777\\jack-backend\\node_modules\\mongoose\\lib\\connection.js:766:34)\n' +
+    '    at Mongoose.connect (F:\\Programing Practice\\Jack777\\jack-backend\\node_modules\\mongoose\\lib\\index.js:416:15)\n' +
+    '    at F:\\Programing Practice\\Jack777\\jack-backend\\src\\index.ts:19:20\n' +
+    '    at Generator.next (<anonymous>)\n' +
+    '    at F:\\Programing Practice\\Jack777\\jack-backend\\src\\index.ts:8:71\n' +
+    '    at new Promise (<anonymous>)\n' +
+    '    at __awaiter (F:\\Programing Practice\\Jack777\\jack-backend\\src\\index.ts:4:12)\n' +
+    '    at Database (F:\\Programing Practice\\Jack777\\jack-backend\\src\\index.ts:21:12)\n' +
+    '    at Object.<anonymous> (F:\\Programing Practice\\Jack777\\jack-backend\\src\\index.ts:40:1)',
+  label: 'Jack',
+  timestamp: '2025-09-19T20:37:03.182Z'
+}

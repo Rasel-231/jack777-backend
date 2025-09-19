@@ -90,12 +90,10 @@ const forgetPassword = CustomAsyncFn(async (req: Request, res: Response) => {
 
 // ---------- Reset Password ----------
 const resetPassword = CustomAsyncFn(async (req: Request, res: Response) => {
-    console.log("BODY ID:", req.body._id);
-    console.log("TOKEN PAYLOAD:", jwt.decode(req.query.token as string));
 
     const token = req.query.token as string;
     const payload = {
-        id: req.body._id,
+
         newPassword: req.body.newPassword
     };
     const result = await AuthService.resetPassword(payload, token);

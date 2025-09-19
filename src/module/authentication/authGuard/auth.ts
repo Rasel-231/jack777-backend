@@ -19,7 +19,7 @@ const auth =
                 // verify token
                 let verifiedUser = null;
 
-                verifiedUser = jwtToken.verifyToken(token, config.jwt_access_Token as Secret) as any;
+                verifiedUser = jwtToken.verifyToken(token, config.jwt_access_secret as Secret) as any;
 
                 req.user = verifiedUser;
 
