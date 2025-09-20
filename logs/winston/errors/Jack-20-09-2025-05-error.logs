@@ -1,0 +1,24 @@
+{
+  errno: undefined,
+  code: 'ECONNREFUSED',
+  syscall: 'querySrv',
+  hostname: '_mongodb._tcp.crud.tebgs.mongodb.net',
+  level: 'error',
+  message: 'Failed to caonnected Database querySrv ECONNREFUSED _mongodb._tcp.crud.tebgs.mongodb.net',
+  stack: 'Error: querySrv ECONNREFUSED _mongodb._tcp.crud.tebgs.mongodb.net\n' +
+    '    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:294:17)',
+  label: 'Jack',
+  timestamp: '2025-09-19T23:32:18.860Z'
+}
+{
+  errno: undefined,
+  code: 'ECONNREFUSED',
+  syscall: 'querySrv',
+  hostname: '_mongodb._tcp.crud.tebgs.mongodb.net',
+  level: 'error',
+  message: 'Failed to caonnected Database querySrv ECONNREFUSED _mongodb._tcp.crud.tebgs.mongodb.net',
+  stack: 'Error: querySrv ECONNREFUSED _mongodb._tcp.crud.tebgs.mongodb.net\n' +
+    '    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:294:17)',
+  label: 'Jack',
+  timestamp: '2025-09-19T23:32:49.785Z'
+}

@@ -4,6 +4,9 @@ import { UserService } from "./user.service";
 import { sendResponse } from "../../../common/CustomResponse/sendResponse";
 import { IUser } from "./user.interface";
 import { StatusCodes } from "http-status-codes";
+import pick from "../../../common/CustomPick/Pick";
+import { userFilterableFields } from "./user.constant";
+import { paginationFields } from "../../../common/CustomPagination/pagination";
 
 const UserUser = CustomAsyncFn(async (req: Request, res: Response) => {
     const result = await UserService.UserUser(req.body)
@@ -16,12 +19,16 @@ const UserUser = CustomAsyncFn(async (req: Request, res: Response) => {
 })
 
 const getAllUser = CustomAsyncFn(async (req: Request, res: Response) => {
-    const result = await UserService.getAllUser()
+    const filter = pick(req.query, userFilterableFields)
+    const pagination = pick(req.query, paginationFields)
+    const result = await UserService.getAllUser(filter, pagination)
+
     sendResponse<IUser[]>(res, {
         success: true,
         statusCode: StatusCodes.OK,
         message: "User find successfully",
-        data: result
+        meta: result.meta,
+        data: result.data
     })
 })
 const getSingleUser = CustomAsyncFn(async (req: Request, res: Response) => {

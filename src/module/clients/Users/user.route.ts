@@ -10,7 +10,7 @@ router.get("/:id", UserController.getSingleUser)
 router.delete("/:id", UserController.deleteUser)
 router.get("/", UserController.getAllUser)
 router.patch("/:id", validateRequest(UserZodValidations.UseraUpdateValidation), UserController.updateUser)
-router.post("/users-create", validateRequest(UserZodValidations.UserValidation), UserController.UserUser)
+router.post("/create", validateRequest(UserZodValidations.UserValidation), UserController.UserUser)
 
 
 export const UserRoutes = router;
