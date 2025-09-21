@@ -5,6 +5,7 @@ import handleValidationError from '../CustomValidationError/handleVlaidationErro
 import config from '../../../config';
 import ApiError from '../CustomApiError/ApiError';
 import { errorLogger } from '../../CustomLogger/logger';
+import handleCastError from '../CastError/castError';
 
 
 
@@ -22,6 +23,12 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         statusCode = simplified.statusCode;
         message = simplified.message;
         errorMessage = simplified.errorMessage
+    }
+    else if (err?.name === "CastError") {
+        const simplifiedError = handleCastError(err)
+        statusCode = simplifiedError.StatusCodes
+        message = simplifiedError.message
+        errorMessage = simplifiedError.errorMessage
     }
 
     else if (err instanceof ApiError) {

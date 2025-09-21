@@ -63,8 +63,6 @@ const refreshToken = CustomAsyncFn(async (req: Request, res: Response) => {
 // ---------- Password Change ----------
 const passwordChanged = CustomAsyncFn(async (req: Request, res: Response) => {
     const user = req.user;
-    console.log(req);
-    console.log("Username:", user);
     if (!user) {
         throw new ApiError(StatusCodes.NOT_FOUND, "User does not found");
     }
@@ -104,11 +102,36 @@ const resetPassword = CustomAsyncFn(async (req: Request, res: Response) => {
         data: result,
     });
 });
+//---------Logout Functionality --------
+const Logout = CustomAsyncFn(async (req: Request, res: Response) => {
+    // Clear the access and refresh tokens
+    res.clearCookie("accessToken", {
+        httpOnly: true,
+        secure: config.node_env === "production",
+        sameSite: 'strict',
+    });
+
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: config.node_env === "production",
+        sameSite: 'strict',
+    });
+
+    // Send a nice success response
+    sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: "Logout successful!.",
+        data: null,
+    });
+});
+
 
 // ---------- Export ----------
 export const AuthController = {
     register,
     login,
+    Logout,
     refreshToken,
     passwordChanged,
     forgetPassword,

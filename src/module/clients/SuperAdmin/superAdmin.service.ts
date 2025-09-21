@@ -1,10 +1,10 @@
 import { StatusCodes } from "http-status-codes"
 import ApiError from "../../../common/CustomError/CustomApiError/ApiError"
-import { IRegister } from "./register.interface"
-import { Register } from "./register.model"
+import { ISuperAdmin } from "./superAdmin.interface"
+import { SuperAdmin } from "./superAdmin.model"
 
-const registerUser = async (data: IRegister): Promise<IRegister | null> => {
-    const existingUser = await Register.findOne({
+const CreateSuperAdmin = async (data: ISuperAdmin): Promise<ISuperAdmin | null> => {
+    const existingUser = await SuperAdmin.findOne({
         $or: [
             { username: data.username },
             { email: data.email },
@@ -24,35 +24,35 @@ const registerUser = async (data: IRegister): Promise<IRegister | null> => {
         }
     }
 
-    const result = await Register.create(data);
+    const result = await SuperAdmin.create(data);
     return result;
 }
 
 
 
 
-const getAllUser = async (): Promise<IRegister[]> => {
-    const result = await Register.find()
+const getAllUser = async (): Promise<ISuperAdmin[]> => {
+    const result = await SuperAdmin.find()
     return result
 }
-const getSingleUser = async (id: string): Promise<IRegister | null> => {
-    const result = await Register.findById(id)
+const getSingleUser = async (id: string): Promise<ISuperAdmin | null> => {
+    const result = await SuperAdmin.findById(id)
     return result
 }
-const deleteUser = async (id: string): Promise<IRegister | null> => {
-    const result = await Register.findByIdAndDelete(id)
+const deleteUser = async (id: string): Promise<ISuperAdmin | null> => {
+    const result = await SuperAdmin.findByIdAndDelete(id)
     return result
 }
 const updateUser = async (
     id: string,
-    payload: Partial<IRegister>
-): Promise<IRegister | null> => {
-    const result = await Register.findByIdAndUpdate(id, payload, { new: true })
+    payload: Partial<ISuperAdmin>
+): Promise<ISuperAdmin | null> => {
+    const result = await SuperAdmin.findByIdAndUpdate(id, payload, { new: true })
     return result
 }
 
-export const registerService = {
-    registerUser,
+export const SuperAdminService = {
+    CreateSuperAdmin,
     getAllUser,
     getSingleUser,
     deleteUser,

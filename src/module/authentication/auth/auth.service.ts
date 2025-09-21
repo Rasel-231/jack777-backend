@@ -31,10 +31,8 @@ const register = async (data: IAuth): Promise<IAuth | null> => {
 
 // 2️⃣ Login
 const login = async (username: string, password: string) => {
-    console.log("username:", username);
 
     const isUserExist = await Auth.isUserExist(username);
-    console.log("isuserExist", isUserExist);
     if (!isUserExist) throw new ApiError(StatusCodes.NOT_FOUND, "User does not exist");
 
     if (isUserExist.password && !(await Auth.isPasswordMatched(password, isUserExist?.password))) {
@@ -55,6 +53,8 @@ const login = async (username: string, password: string) => {
 
     return { accessToken, refreshToken };
 };
+
+
 
 // 3️⃣ Refresh Token
 const refreshToken = async (refreshtoken: string): Promise<IRefreshTokenResponse> => {

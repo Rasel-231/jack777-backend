@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { CustomAsyncFn } from "../../../common/CustomAsyncFn/CustomAsyncFn";
-import { registerService } from "./register.service";
+import { SuperAdminService } from "./superAdmin.service";
 import { sendResponse } from "../../../common/CustomResponse/sendResponse";
-import { IRegister } from "./register.interface";
+import { ISuperAdmin } from "./superAdmin.interface";
 import { StatusCodes } from "http-status-codes";
 
-const registerUser = CustomAsyncFn(async (req: Request, res: Response) => {
-    const result = await registerService.registerUser(req.body)
-    sendResponse<IRegister>(res, {
+const CreateSuperAdmin = CustomAsyncFn(async (req: Request, res: Response) => {
+    const result = await SuperAdminService.CreateSuperAdmin(req.body)
+    sendResponse<ISuperAdmin>(res, {
         success: true,
         statusCode: StatusCodes.OK,
         message: "User create successfully",
@@ -16,8 +16,8 @@ const registerUser = CustomAsyncFn(async (req: Request, res: Response) => {
 })
 
 const getAllUser = CustomAsyncFn(async (req: Request, res: Response) => {
-    const result = await registerService.getAllUser()
-    sendResponse<IRegister[]>(res, {
+    const result = await SuperAdminService.getAllUser()
+    sendResponse<ISuperAdmin[]>(res, {
         success: true,
         statusCode: StatusCodes.OK,
         message: "User find successfully",
@@ -25,8 +25,8 @@ const getAllUser = CustomAsyncFn(async (req: Request, res: Response) => {
     })
 })
 const getSingleUser = CustomAsyncFn(async (req: Request, res: Response) => {
-    const result = await registerService.getSingleUser(req.params.id)
-    sendResponse<IRegister>(res, {
+    const result = await SuperAdminService.getSingleUser(req.params.id)
+    sendResponse<ISuperAdmin>(res, {
         success: true,
         statusCode: StatusCodes.OK,
         message: "User find successfully",
@@ -35,8 +35,8 @@ const getSingleUser = CustomAsyncFn(async (req: Request, res: Response) => {
 })
 
 const deleteUser = CustomAsyncFn(async (req: Request, res: Response) => {
-    const result = await registerService.deleteUser(req.params.id)
-    sendResponse<IRegister>(res, {
+    const result = await SuperAdminService.deleteUser(req.params.id)
+    sendResponse<ISuperAdmin>(res, {
         success: true,
         statusCode: StatusCodes.OK,
         message: "User deleted successfully",
@@ -46,8 +46,8 @@ const deleteUser = CustomAsyncFn(async (req: Request, res: Response) => {
 const updateUser = CustomAsyncFn(async (req: Request, res: Response) => {
     const id = req.params.id;
     const UpdateData = req.body;
-    const result = await registerService.updateUser(id, UpdateData)
-    sendResponse<IRegister>(res, {
+    const result = await SuperAdminService.updateUser(id, UpdateData)
+    sendResponse<ISuperAdmin>(res, {
         success: true,
         statusCode: StatusCodes.OK,
         message: "User updated successfully",
@@ -55,8 +55,8 @@ const updateUser = CustomAsyncFn(async (req: Request, res: Response) => {
     })
 })
 
-export const registerController = {
-    registerUser,
+export const SuperAdminController = {
+    CreateSuperAdmin,
     getAllUser,
     getSingleUser,
     deleteUser,

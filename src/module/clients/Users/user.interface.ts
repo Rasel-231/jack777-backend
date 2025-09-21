@@ -1,4 +1,5 @@
 import { Model, Document, SortOrder } from "mongoose";
+import { ENUM_USER_ROLE } from "../../../enums/enum";
 export interface IUser extends Document {
     username: string;
     password: string;
@@ -6,6 +7,7 @@ export interface IUser extends Document {
     email: string;
     phone: string;
     dob: string;
+    role?: typeof ENUM_USER_ROLE.USER
 }
 
 export type UserModel = Model<IUser>;
